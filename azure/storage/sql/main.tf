@@ -1,28 +1,30 @@
 # Optional: Retrieve password from Key Vault
 data "azurerm_key_vault_secret" "admin_password" {
   count = lookup(local.config.database, "admin_password_secret_id", null) != null ? 1 : 0
-  
+
   name         = split("/", local.config.database.admin_password_secret_id)[4]
   key_vault_id = join("/", slice(split("/", local.config.database.admin_password_secret_id), 0, 9))
 }
 
 resource "azurerm_mssql_server" "this" {
-  name                         = local.server_name
-  resource_group_name          = local.config.azure.resource_group_name
-  location                     = local.config.meta.region
-  version                      = lookup(local.config.database, "server_version", "12.0")
-  administrator_login          = local.config.database.administrator_login
-  
+  name                = local.server_name
+  resource_group_name = local.config.azure.resource_group_name
+  location            = local.config.meta.region
+  version             = lookup(local.config.database, "server_version", "12.0")
+  administrator_login = local.config.database.administrator_login
+
   # Password handling: Key Vault reference required for production
-  administrator_login_password = lookup(local.config.database, "admin_password_secret_id", null) != null ? 
+  administrator_login_password = (
+    lookup(local.config.database, "admin_password_secret_id", null) != null ?
     data.azurerm_key_vault_secret.admin_password[0].value : (
       local.config.meta.environment == "production" ?
-        tobool("ERROR: admin_password_secret_id required for production. Raw passwords not allowed.") :
-        local.config.database.administrator_login_password
+      tobool("ERROR: admin_password_secret_id required for production. Raw passwords not allowed.") :
+      local.config.database.administrator_login_password
     )
+  )
 
-  minimum_tls_version               = "1.2"
-  public_network_access_enabled     = local.config.security.public_access
+  minimum_tls_version                  = "1.2"
+  public_network_access_enabled        = local.config.security.public_access
   outbound_network_restriction_enabled = false
 
   azuread_administrator {

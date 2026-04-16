@@ -1,6 +1,6 @@
 module "apm_monitor" {
   source = "../../"
-  
+
   config_file = "./config.yaml"
 }
 

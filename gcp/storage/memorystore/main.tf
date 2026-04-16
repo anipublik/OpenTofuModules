@@ -15,7 +15,7 @@ resource "google_redis_instance" "this" {
   auth_enabled            = lookup(local.config.redis, "auth_enabled", true)
   transit_encryption_mode = lookup(local.config.redis, "transit_encryption_mode", "SERVER_AUTHENTICATION")
 
-  replica_count = lookup(local.config.redis, "replica_count", 1)
+  replica_count      = lookup(local.config.redis, "replica_count", 1)
   read_replicas_mode = lookup(local.config.redis, "read_replicas_mode", "READ_REPLICAS_ENABLED")
 
   dynamic "maintenance_policy" {

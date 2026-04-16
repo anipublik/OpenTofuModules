@@ -1,9 +1,9 @@
 resource "aws_dynamodb_table" "this" {
-  name           = local.table_name
-  billing_mode   = lookup(local.config.table, "billing_mode", "PAY_PER_REQUEST")
-  hash_key       = local.config.table.hash_key
-  range_key      = lookup(local.config.table, "range_key", null)
-  
+  name         = local.table_name
+  billing_mode = lookup(local.config.table, "billing_mode", "PAY_PER_REQUEST")
+  hash_key     = local.config.table.hash_key
+  range_key    = lookup(local.config.table, "range_key", null)
+
   read_capacity  = lookup(local.config.table, "billing_mode", "PAY_PER_REQUEST") == "PROVISIONED" ? lookup(local.config.table, "read_capacity", 5) : null
   write_capacity = lookup(local.config.table, "billing_mode", "PAY_PER_REQUEST") == "PROVISIONED" ? lookup(local.config.table, "write_capacity", 5) : null
 

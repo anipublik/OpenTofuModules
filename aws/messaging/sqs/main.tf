@@ -1,8 +1,8 @@
 resource "aws_sqs_queue" "this" {
-  name                       = local.queue_name
-  fifo_queue                 = lookup(local.config.queue, "fifo", false)
+  name                        = local.queue_name
+  fifo_queue                  = lookup(local.config.queue, "fifo", false)
   content_based_deduplication = lookup(local.config.queue, "fifo", false) ? lookup(local.config.queue, "content_based_deduplication", false) : null
-  
+
   delay_seconds              = lookup(local.config.queue, "delay_seconds", 0)
   max_message_size           = lookup(local.config.queue, "max_message_size", 262144)
   message_retention_seconds  = lookup(local.config.queue, "message_retention_seconds", 345600)

@@ -5,8 +5,8 @@ resource "aws_lb" "this" {
   security_groups    = concat([aws_security_group.this.id], lookup(local.config.networking, "additional_security_groups", []))
   subnets            = local.config.networking.subnet_ids
 
-  enable_deletion_protection = local.config.security.deletion_protection
-  enable_http2               = lookup(local.config.alb, "enable_http2", true)
+  enable_deletion_protection       = local.config.security.deletion_protection
+  enable_http2                     = lookup(local.config.alb, "enable_http2", true)
   enable_cross_zone_load_balancing = true
 
   drop_invalid_header_fields = true

@@ -1,6 +1,6 @@
 module "example" {
-  source = "../../"  # Points to parent module directory
-  
+  source = "../../" # Points to parent module directory
+
   config_file = "config.yaml"
 }
 

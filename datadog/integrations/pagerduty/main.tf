@@ -11,7 +11,9 @@ resource "datadog_integration_pagerduty" "this" {
 
   # api_token handling: raw secrets rejected for production config.
   # Use environment variable DD_PAGERDUTY_API_TOKEN or a secret store reference.
-  api_token = local.config.meta.environment == "production" && lookup(local.config.integration, "api_token", "") != "" ?
+  api_token = (
+    local.config.meta.environment == "production" && lookup(local.config.integration, "api_token", "") != "" ?
     tobool("ERROR: api_token not allowed in production YAML. Use environment variable DD_PAGERDUTY_API_TOKEN or secret reference") :
     lookup(local.config.integration, "api_token", "")
+  )
 }

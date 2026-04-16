@@ -11,10 +11,10 @@ resource "datadog_logs_custom_pipeline" "this" {
       dynamic "grok_parser" {
         for_each = lookup(processor.value, "type", "") == "grok-parser" ? [processor.value] : []
         content {
-          name    = grok_parser.value.name
+          name       = grok_parser.value.name
           is_enabled = lookup(grok_parser.value, "enabled", true)
-          source  = lookup(grok_parser.value, "source", "message")
-          samples = lookup(grok_parser.value, "samples", [])
+          source     = lookup(grok_parser.value, "source", "message")
+          samples    = lookup(grok_parser.value, "samples", [])
           grok {
             support_rules = lookup(grok_parser.value, "support_rules", "")
             match_rules   = grok_parser.value.match_rules

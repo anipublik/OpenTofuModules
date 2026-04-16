@@ -72,9 +72,9 @@ resource "azurerm_application_gateway" "this" {
   dynamic "ssl_certificate" {
     for_each = lookup(local.config.app_gateway, "ssl_certificates", [])
     content {
-      name     = ssl_certificate.value.name
-      data     = lookup(ssl_certificate.value, "data", null)
-      password = lookup(ssl_certificate.value, "password", null)
+      name                = ssl_certificate.value.name
+      data                = lookup(ssl_certificate.value, "data", null)
+      password            = lookup(ssl_certificate.value, "password", null)
       key_vault_secret_id = lookup(ssl_certificate.value, "key_vault_secret_id", null)
     }
   }

@@ -38,15 +38,15 @@ resource "azurerm_cdn_frontdoor_origin_group" "this" {
 resource "azurerm_cdn_frontdoor_origin" "this" {
   for_each = { for idx, origin in lookup(local.config.frontdoor, "origins", []) : idx => origin }
 
-  name                          = each.value.name
-  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.this[each.value.origin_group_index].id
-  host_name                     = each.value.host_name
-  http_port                     = lookup(each.value, "http_port", 80)
-  https_port                    = lookup(each.value, "https_port", 443)
-  origin_host_header            = lookup(each.value, "origin_host_header", each.value.host_name)
-  priority                      = lookup(each.value, "priority", 1)
-  weight                        = lookup(each.value, "weight", 1000)
-  enabled                       = lookup(each.value, "enabled", true)
+  name                           = each.value.name
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.this[each.value.origin_group_index].id
+  host_name                      = each.value.host_name
+  http_port                      = lookup(each.value, "http_port", 80)
+  https_port                     = lookup(each.value, "https_port", 443)
+  origin_host_header             = lookup(each.value, "origin_host_header", each.value.host_name)
+  priority                       = lookup(each.value, "priority", 1)
+  weight                         = lookup(each.value, "weight", 1000)
+  enabled                        = lookup(each.value, "enabled", true)
   certificate_name_check_enabled = lookup(each.value, "certificate_name_check_enabled", true)
 }
 

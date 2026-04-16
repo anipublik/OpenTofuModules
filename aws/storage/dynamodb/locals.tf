@@ -3,19 +3,19 @@ locals {
 
   validation = module.validation.validation_passed
 
-  table_name = module.naming.name
+  table_name  = module.naming.name
   kms_key_arn = lookup(lookup(local.config, "encryption", {}), "kms_key_id", null)
-  
+
   tags = module.tagging.tags
 }
 
 module "naming" {
   source = "../../../shared/naming"
 
-  environment   = local.config.meta.environment
-  team          = local.config.meta.team
-  resource_type = "dynamodb"
-  name          = local.config.meta.name
+  environment    = local.config.meta.environment
+  team           = local.config.meta.team
+  resource_type  = "dynamodb"
+  name           = local.config.meta.name
   cloud_provider = "aws"
 }
 
@@ -32,7 +32,7 @@ module "tagging" {
 module "validation" {
   source = "../../../shared/validation"
 
-  config        = local.config
+  config         = local.config
   cloud_provider = "aws"
-  resource_type = "dynamodb"
+  resource_type  = "dynamodb"
 }

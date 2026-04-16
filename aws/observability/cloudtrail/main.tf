@@ -4,7 +4,7 @@ resource "aws_cloudtrail" "this" {
   include_global_service_events = lookup(local.config.trail, "include_global_service_events", true)
   is_multi_region_trail         = lookup(local.config.trail, "multi_region", true)
   enable_log_file_validation    = true
-  
+
   kms_key_id = local.config.security.encryption_enabled ? local.kms_key_id : null
 
   dynamic "event_selector" {

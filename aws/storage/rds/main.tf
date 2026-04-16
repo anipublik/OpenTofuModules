@@ -13,18 +13,18 @@ resource "aws_db_instance" "this" {
 
   db_name  = lookup(local.config.database, "db_name", null)
   username = local.config.database.username
-  
+
   # Password handling: AWS-managed secrets by default (recommended)
   # Set manage_master_user_password = false ONLY if using external secret management
   manage_master_user_password   = lookup(local.config.database, "manage_master_user_password", true)
   master_user_secret_kms_key_id = lookup(local.config.database, "manage_master_user_password", true) ? local.kms_key_id : null
-  
+
   # DEPRECATED: Direct password field - will be removed in future version
   # Use manage_master_user_password or reference Secrets Manager ARN instead
   password = lookup(local.config.database, "manage_master_user_password", true) ? null : (
-    lookup(local.config.database, "password", null) != null && local.config.meta.environment == "production" ? 
-      tobool("ERROR: Raw passwords not allowed in production. Use manage_master_user_password=true or reference Secrets Manager") :
-      lookup(local.config.database, "password", null)
+    lookup(local.config.database, "password", null) != null && local.config.meta.environment == "production" ?
+    tobool("ERROR: Raw passwords not allowed in production. Use manage_master_user_password=true or reference Secrets Manager") :
+    lookup(local.config.database, "password", null)
   )
 
   multi_az               = local.config.reliability.multi_az

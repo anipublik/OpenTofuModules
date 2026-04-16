@@ -48,23 +48,23 @@ resource "aws_route53_record" "this" {
     }
   }
 
-  set_identifier = lookup(each.value, "set_identifier", null)
+  set_identifier  = lookup(each.value, "set_identifier", null)
   health_check_id = lookup(each.value, "health_check_id", null)
 }
 
 resource "aws_route53_health_check" "this" {
   for_each = { for idx, hc in lookup(local.config.zone, "health_checks", []) : idx => hc }
 
-  type                            = each.value.type
-  resource_path                   = lookup(each.value, "resource_path", null)
-  fqdn                            = lookup(each.value, "fqdn", null)
-  ip_address                      = lookup(each.value, "ip_address", null)
-  port                            = lookup(each.value, "port", null)
-  protocol                        = lookup(each.value, "protocol", null)
-  request_interval                = lookup(each.value, "request_interval", 30)
-  failure_threshold               = lookup(each.value, "failure_threshold", 3)
-  measure_latency                 = lookup(each.value, "measure_latency", false)
-  enable_sni                      = lookup(each.value, "enable_sni", true)
+  type              = each.value.type
+  resource_path     = lookup(each.value, "resource_path", null)
+  fqdn              = lookup(each.value, "fqdn", null)
+  ip_address        = lookup(each.value, "ip_address", null)
+  port              = lookup(each.value, "port", null)
+  protocol          = lookup(each.value, "protocol", null)
+  request_interval  = lookup(each.value, "request_interval", 30)
+  failure_threshold = lookup(each.value, "failure_threshold", 3)
+  measure_latency   = lookup(each.value, "measure_latency", false)
+  enable_sni        = lookup(each.value, "enable_sni", true)
 
   tags = merge(local.tags, {
     Name = "${local.zone_name}-hc-${each.key}"

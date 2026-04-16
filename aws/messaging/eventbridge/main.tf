@@ -14,12 +14,12 @@ resource "aws_cloudwatch_event_bus_policy" "this" {
 resource "aws_cloudwatch_event_rule" "this" {
   for_each = { for idx, rule in lookup(local.config.bus, "rules", []) : idx => rule }
 
-  name           = each.value.name
-  description    = lookup(each.value, "description", "")
-  event_bus_name = aws_cloudwatch_event_bus.this.name
-  event_pattern  = lookup(each.value, "event_pattern", null) != null ? jsonencode(each.value.event_pattern) : null
+  name                = each.value.name
+  description         = lookup(each.value, "description", "")
+  event_bus_name      = aws_cloudwatch_event_bus.this.name
+  event_pattern       = lookup(each.value, "event_pattern", null) != null ? jsonencode(each.value.event_pattern) : null
   schedule_expression = lookup(each.value, "schedule_expression", null)
-  state          = lookup(each.value, "enabled", true) ? "ENABLED" : "DISABLED"
+  state               = lookup(each.value, "enabled", true) ? "ENABLED" : "DISABLED"
 
   tags = local.tags
 }
@@ -44,8 +44,8 @@ resource "aws_cloudwatch_event_target" "this" {
   dynamic "retry_policy" {
     for_each = lookup(each.value.target, "retry_policy", null) != null ? [1] : []
     content {
-      maximum_event_age       = lookup(each.value.target.retry_policy, "maximum_event_age", 86400)
-      maximum_retry_attempts  = lookup(each.value.target.retry_policy, "maximum_retry_attempts", 185)
+      maximum_event_age      = lookup(each.value.target.retry_policy, "maximum_event_age", 86400)
+      maximum_retry_attempts = lookup(each.value.target.retry_policy, "maximum_retry_attempts", 185)
     }
   }
 

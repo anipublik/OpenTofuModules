@@ -84,9 +84,9 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = lookup(local.config.distribution, "acm_certificate_arn", null)
-    ssl_support_method       = lookup(local.config.distribution, "acm_certificate_arn", null) != null ? "sni-only" : null
-    minimum_protocol_version = lookup(local.config.distribution, "minimum_protocol_version", "TLSv1.2_2021")
+    acm_certificate_arn            = lookup(local.config.distribution, "acm_certificate_arn", null)
+    ssl_support_method             = lookup(local.config.distribution, "acm_certificate_arn", null) != null ? "sni-only" : null
+    minimum_protocol_version       = lookup(local.config.distribution, "minimum_protocol_version", "TLSv1.2_2021")
     cloudfront_default_certificate = lookup(local.config.distribution, "acm_certificate_arn", null) == null ? true : false
   }
 

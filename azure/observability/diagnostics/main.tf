@@ -1,9 +1,9 @@
 resource "azurerm_monitor_diagnostic_setting" "this" {
-  name                       = local.diagnostics_name
-  target_resource_id         = local.config.diagnostics.target_resource_id
-  log_analytics_workspace_id = lookup(local.config.diagnostics, "log_analytics_workspace_id", null)
-  storage_account_id         = lookup(local.config.diagnostics, "storage_account_id", null)
-  eventhub_name              = lookup(local.config.diagnostics, "eventhub_name", null)
+  name                           = local.diagnostics_name
+  target_resource_id             = local.config.diagnostics.target_resource_id
+  log_analytics_workspace_id     = lookup(local.config.diagnostics, "log_analytics_workspace_id", null)
+  storage_account_id             = lookup(local.config.diagnostics, "storage_account_id", null)
+  eventhub_name                  = lookup(local.config.diagnostics, "eventhub_name", null)
   eventhub_authorization_rule_id = lookup(local.config.diagnostics, "eventhub_authorization_rule_id", null)
 
   dynamic "enabled_log" {

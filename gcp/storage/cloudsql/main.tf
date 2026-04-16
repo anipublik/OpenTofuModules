@@ -72,12 +72,12 @@ resource "google_sql_user" "this" {
   instance = google_sql_database_instance.this.name
   type     = lookup(each.value, "type", "BUILT_IN")
   project  = local.config.gcp.project_id
-  
+
   # Password handling: Use Secret Manager or Cloud IAM authentication
   # Raw passwords rejected in production
   password = lookup(each.value, "type", "BUILT_IN") == "BUILT_IN" ? (
     lookup(each.value, "password", null) != null && local.config.meta.environment == "production" ?
-      tobool("ERROR: Raw passwords not allowed in production. Use type=CLOUD_IAM_USER or Secret Manager reference") :
-      lookup(each.value, "password", null)
+    tobool("ERROR: Raw passwords not allowed in production. Use type=CLOUD_IAM_USER or Secret Manager reference") :
+    lookup(each.value, "password", null)
   ) : null
 }

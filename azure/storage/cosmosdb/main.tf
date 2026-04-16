@@ -26,10 +26,10 @@ resource "azurerm_cosmosdb_account" "this" {
     }
   }
 
-  enable_automatic_failover = lookup(local.config.cosmosdb, "enable_automatic_failover", true)
+  enable_automatic_failover       = lookup(local.config.cosmosdb, "enable_automatic_failover", true)
   enable_multiple_write_locations = lookup(local.config.cosmosdb, "enable_multiple_write_locations", false)
 
-  public_network_access_enabled = local.config.security.public_access
+  public_network_access_enabled     = local.config.security.public_access
   is_virtual_network_filter_enabled = !local.config.security.public_access
 
   dynamic "virtual_network_rule" {

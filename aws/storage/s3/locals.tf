@@ -17,27 +17,27 @@ locals {
 module "naming" {
   source = "../../../shared/naming"
 
-  environment   = local.config.meta.environment
-  team          = local.config.meta.team
-  resource_type = "s3"
-  name          = local.config.meta.name
+  environment    = local.config.meta.environment
+  team           = local.config.meta.team
+  resource_type  = "s3"
+  name           = local.config.meta.name
   cloud_provider = "aws"
 }
 
 module "tagging" {
   source = "../../../shared/tagging"
 
-  environment  = local.config.meta.environment
-  team         = local.config.meta.team
-  cost_center  = local.config.meta.cost_center
-  module_path  = "aws/storage/s3"
-  custom_tags  = lookup(local.config, "tags", {})
+  environment = local.config.meta.environment
+  team        = local.config.meta.team
+  cost_center = local.config.meta.cost_center
+  module_path = "aws/storage/s3"
+  custom_tags = lookup(local.config, "tags", {})
 }
 
 module "validation" {
   source = "../../../shared/validation"
 
-  config        = local.config
+  config         = local.config
   cloud_provider = "aws"
-  resource_type = "s3"
+  resource_type  = "s3"
 }

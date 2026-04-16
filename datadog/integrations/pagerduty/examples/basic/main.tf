@@ -1,6 +1,6 @@
 module "example" {
   source = "../../"
-  
+
   config_file = "./config.yaml"
 }
 

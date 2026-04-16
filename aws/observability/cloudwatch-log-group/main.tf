@@ -31,9 +31,9 @@ resource "aws_cloudwatch_log_metric_filter" "this" {
   pattern        = each.value.pattern
 
   metric_transformation {
-    name      = each.value.metric_name
-    namespace = each.value.metric_namespace
-    value     = each.value.metric_value
+    name          = each.value.metric_name
+    namespace     = each.value.metric_namespace
+    value         = each.value.metric_value
     default_value = lookup(each.value, "default_value", null)
   }
 }

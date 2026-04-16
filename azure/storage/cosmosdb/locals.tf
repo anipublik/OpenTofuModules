@@ -4,18 +4,18 @@ locals {
   validation = module.validation.validation_passed
 
   resource_name = module.naming.name
-  account_name = local.resource_name
-  
+  account_name  = local.resource_name
+
   tags = module.tagging.tags
 }
 
 module "naming" {
   source = "../../../shared/naming"
 
-  environment   = local.config.meta.environment
-  team          = local.config.meta.team
-  resource_type = "cosmos"
-  name          = local.config.meta.name
+  environment    = local.config.meta.environment
+  team           = local.config.meta.team
+  resource_type  = "cosmos"
+  name           = local.config.meta.name
   cloud_provider = "azure"
 }
 
@@ -32,7 +32,7 @@ module "tagging" {
 module "validation" {
   source = "../../../shared/validation"
 
-  config        = local.config
+  config         = local.config
   cloud_provider = "azure"
-  resource_type = "cosmos"
+  resource_type  = "cosmos"
 }

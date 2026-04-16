@@ -22,7 +22,7 @@ resource "azurerm_redis_cache" "this" {
     rdb_storage_connection_string   = lookup(local.config.reliability, "backup_storage_connection_string", null)
   }
 
-  zone_redundant = lookup(local.config.reliability, "zone_redundant", false)
+  zone_redundant      = lookup(local.config.reliability, "zone_redundant", false)
   replicas_per_master = lookup(local.config.redis, "replicas_per_master", 0)
 
   patch_schedule {

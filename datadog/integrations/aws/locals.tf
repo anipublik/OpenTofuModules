@@ -7,7 +7,7 @@ locals {
 module "validation" {
   source = "../../../shared/validation"
 
-  config        = local.config
+  config         = local.config
   cloud_provider = "datadog"
-  resource_type = "integration-aws"
+  resource_type  = "integration-aws"
 }

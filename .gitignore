@@ -31,3 +31,4 @@ Thumbs.db
 # Testing
 .test/
 test-results/
+.bin/

@@ -4,20 +4,20 @@ locals {
   validation = module.validation.validation_passed
 
   resource_name = module.naming.name
-  bucket_name = local.resource_name
-  kms_key_name = lookup(local.config.security, "kms_key_id", null)
-  labels = module.tagging.labels
-  
+  bucket_name   = local.resource_name
+  kms_key_name  = lookup(local.config.security, "kms_key_id", null)
+  labels        = module.tagging.labels
+
   tags = module.tagging.tags
 }
 
 module "naming" {
   source = "../../../shared/naming"
 
-  environment   = local.config.meta.environment
-  team          = local.config.meta.team
-  resource_type = "gcs"
-  name          = local.config.meta.name
+  environment    = local.config.meta.environment
+  team           = local.config.meta.team
+  resource_type  = "gcs"
+  name           = local.config.meta.name
   cloud_provider = "gcp"
 }
 
@@ -34,7 +34,7 @@ module "tagging" {
 module "validation" {
   source = "../../../shared/validation"
 
-  config        = local.config
+  config         = local.config
   cloud_provider = "gcp"
-  resource_type = "gcs"
+  resource_type  = "gcs"
 }

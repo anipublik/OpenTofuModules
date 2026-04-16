@@ -8,8 +8,8 @@ locals {
   assume_role_policy = {
     Version = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = local.config.role.principal
       Condition = lookup(local.config.role, "conditions", null)
     }]
@@ -21,10 +21,10 @@ locals {
 module "naming" {
   source = "../../../shared/naming"
 
-  environment   = local.config.meta.environment
-  team          = local.config.meta.team
-  resource_type = "iam-role"
-  name          = local.config.meta.name
+  environment    = local.config.meta.environment
+  team           = local.config.meta.team
+  resource_type  = "iam-role"
+  name           = local.config.meta.name
   cloud_provider = "aws"
 }
 
@@ -41,7 +41,7 @@ module "tagging" {
 module "validation" {
   source = "../../../shared/validation"
 
-  config        = local.config
+  config         = local.config
   cloud_provider = "aws"
-  resource_type = "iam-role"
+  resource_type  = "iam-role"
 }

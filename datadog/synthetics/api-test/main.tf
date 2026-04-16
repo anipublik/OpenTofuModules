@@ -10,7 +10,7 @@ resource "datadog_synthetics_test" "this" {
     method = lookup(local.config.test.request, "method", "GET")
     url    = local.config.test.request.url
     body   = lookup(local.config.test.request, "body", null)
-    
+
     dynamic "header" {
       for_each = lookup(local.config.test.request, "headers", {})
       content {
@@ -45,11 +45,11 @@ resource "datadog_synthetics_test" "this" {
   }
 
   options_list {
-    tick_every         = lookup(local.config.test.options, "tick_every", 300)
-    follow_redirects   = lookup(local.config.test.options, "follow_redirects", true)
+    tick_every           = lookup(local.config.test.options, "tick_every", 300)
+    follow_redirects     = lookup(local.config.test.options, "follow_redirects", true)
     min_failure_duration = lookup(local.config.test.options, "min_failure_duration", 0)
     min_location_failed  = lookup(local.config.test.options, "min_location_failed", 1)
-    
+
     retry {
       count    = lookup(local.config.test.options, "retry_count", 0)
       interval = lookup(local.config.test.options, "retry_interval", 300)

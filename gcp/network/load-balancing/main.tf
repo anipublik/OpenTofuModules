@@ -31,12 +31,12 @@ resource "google_compute_backend_service" "this" {
   dynamic "cdn_policy" {
     for_each = lookup(each.value, "enable_cdn", false) ? [1] : []
     content {
-      cache_mode                   = lookup(each.value.cdn_policy, "cache_mode", "CACHE_ALL_STATIC")
-      default_ttl                  = lookup(each.value.cdn_policy, "default_ttl", 3600)
-      max_ttl                      = lookup(each.value.cdn_policy, "max_ttl", 86400)
-      client_ttl                   = lookup(each.value.cdn_policy, "client_ttl", 3600)
-      negative_caching             = lookup(each.value.cdn_policy, "negative_caching", true)
-      serve_while_stale            = lookup(each.value.cdn_policy, "serve_while_stale", 86400)
+      cache_mode        = lookup(each.value.cdn_policy, "cache_mode", "CACHE_ALL_STATIC")
+      default_ttl       = lookup(each.value.cdn_policy, "default_ttl", 3600)
+      max_ttl           = lookup(each.value.cdn_policy, "max_ttl", 86400)
+      client_ttl        = lookup(each.value.cdn_policy, "client_ttl", 3600)
+      negative_caching  = lookup(each.value.cdn_policy, "negative_caching", true)
+      serve_while_stale = lookup(each.value.cdn_policy, "serve_while_stale", 86400)
     }
   }
 

@@ -97,7 +97,7 @@ resource "aws_launch_template" "node_group" {
 
   metadata_options {
     http_endpoint               = "enabled"
-    http_tokens                 = "required"  # IMDSv2
+    http_tokens                 = "required" # IMDSv2
     http_put_response_hop_limit = 1
   }
 
@@ -116,9 +116,9 @@ resource "aws_launch_template" "node_group" {
 resource "aws_eks_addon" "vpc_cni" {
   count = lookup(local.config, "addons", null) != null ? 1 : 0
 
-  cluster_name      = aws_eks_cluster.this.name
-  addon_name        = "vpc-cni"
-  addon_version     = lookup(local.config.addons.vpc_cni, "version", null)
+  cluster_name                = aws_eks_cluster.this.name
+  addon_name                  = "vpc-cni"
+  addon_version               = lookup(local.config.addons.vpc_cni, "version", null)
   resolve_conflicts_on_create = lookup(local.config.addons.vpc_cni, "resolve_conflicts", "OVERWRITE")
   resolve_conflicts_on_update = lookup(local.config.addons.vpc_cni, "resolve_conflicts", "OVERWRITE")
 
@@ -128,9 +128,9 @@ resource "aws_eks_addon" "vpc_cni" {
 resource "aws_eks_addon" "coredns" {
   count = lookup(local.config, "addons", null) != null ? 1 : 0
 
-  cluster_name      = aws_eks_cluster.this.name
-  addon_name        = "coredns"
-  addon_version     = lookup(local.config.addons.coredns, "version", null)
+  cluster_name                = aws_eks_cluster.this.name
+  addon_name                  = "coredns"
+  addon_version               = lookup(local.config.addons.coredns, "version", null)
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
@@ -142,9 +142,9 @@ resource "aws_eks_addon" "coredns" {
 resource "aws_eks_addon" "kube_proxy" {
   count = lookup(local.config, "addons", null) != null ? 1 : 0
 
-  cluster_name      = aws_eks_cluster.this.name
-  addon_name        = "kube-proxy"
-  addon_version     = lookup(local.config.addons.kube_proxy, "version", null)
+  cluster_name                = aws_eks_cluster.this.name
+  addon_name                  = "kube-proxy"
+  addon_version               = lookup(local.config.addons.kube_proxy, "version", null)
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 

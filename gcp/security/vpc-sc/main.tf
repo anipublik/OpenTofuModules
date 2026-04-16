@@ -70,7 +70,7 @@ resource "google_access_context_manager_service_perimeter" "this" {
         }
 
         ingress_to {
-          resources  = lookup(ingress_policies.value.ingress_to, "resources", ["*"])
+          resources = lookup(ingress_policies.value.ingress_to, "resources", ["*"])
           operations {
             service_name = ingress_policies.value.ingress_to.operations.service_name
             method_selectors {
@@ -90,7 +90,7 @@ resource "google_access_context_manager_service_perimeter" "this" {
         }
 
         egress_to {
-          resources  = lookup(egress_policies.value.egress_to, "resources", ["*"])
+          resources = lookup(egress_policies.value.egress_to, "resources", ["*"])
           operations {
             service_name = egress_policies.value.egress_to.operations.service_name
             method_selectors {

@@ -24,10 +24,10 @@ resource "aws_lb_target_group" "this" {
   protocol = lookup(each.value, "protocol", "TCP")
   vpc_id   = local.config.networking.vpc_id
 
-  deregistration_delay          = lookup(each.value, "deregistration_delay", 300)
-  connection_termination        = lookup(each.value, "connection_termination", false)
-  preserve_client_ip            = lookup(each.value, "preserve_client_ip", true)
-  proxy_protocol_v2             = lookup(each.value, "proxy_protocol_v2", false)
+  deregistration_delay   = lookup(each.value, "deregistration_delay", 300)
+  connection_termination = lookup(each.value, "connection_termination", false)
+  preserve_client_ip     = lookup(each.value, "preserve_client_ip", true)
+  proxy_protocol_v2      = lookup(each.value, "proxy_protocol_v2", false)
 
   health_check {
     enabled             = true

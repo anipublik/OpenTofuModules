@@ -1,6 +1,6 @@
 resource "aws_security_group" "this" {
   count = lookup(local.config, "networking", null) != null ? 1 : 0
-  
+
   name_prefix = "${local.function_name}-"
   description = "Security group for Lambda function ${local.function_name}"
   vpc_id      = local.config.networking.vpc_id

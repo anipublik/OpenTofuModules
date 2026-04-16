@@ -50,7 +50,7 @@ resource "aws_security_group" "node" {
   vpc_id      = local.config.networking.vpc_id
 
   tags = merge(local.tags, {
-    Name                                        = "${local.cluster_name}-node-sg"
+    Name                                          = "${local.cluster_name}-node-sg"
     "kubernetes.io/cluster/${local.cluster_name}" = "owned"
   })
 

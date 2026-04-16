@@ -14,10 +14,10 @@ locals {
 module "naming" {
   source = "../../../shared/naming"
 
-  environment   = local.config.meta.environment
-  team          = local.config.meta.team
-  resource_type = "vpc"
-  name          = local.config.meta.name
+  environment    = local.config.meta.environment
+  team           = local.config.meta.team
+  resource_type  = "vpc"
+  name           = local.config.meta.name
   cloud_provider = "aws"
 }
 
@@ -34,7 +34,7 @@ module "tagging" {
 module "validation" {
   source = "../../../shared/validation"
 
-  config        = local.config
+  config         = local.config
   cloud_provider = "aws"
-  resource_type = "vpc"
+  resource_type  = "vpc"
 }

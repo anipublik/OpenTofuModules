@@ -28,9 +28,9 @@ resource "google_cloud_tasks_queue" "this" {
 resource "google_cloud_tasks_queue_iam_binding" "this" {
   for_each = { for idx, binding in lookup(local.config.queue, "iam_bindings", []) : idx => binding }
 
-  name    = google_cloud_tasks_queue.this.name
+  name     = google_cloud_tasks_queue.this.name
   location = google_cloud_tasks_queue.this.location
-  project = google_cloud_tasks_queue.this.project
-  role    = each.value.role
-  members = each.value.members
+  project  = google_cloud_tasks_queue.this.project
+  role     = each.value.role
+  members  = each.value.members
 }

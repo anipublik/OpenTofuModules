@@ -15,21 +15,21 @@ resource "datadog_logs_archive" "this" {
   dynamic "azure_archive" {
     for_each = lookup(local.config.archive, "type", "") == "azure" ? [local.config.archive.azure] : []
     content {
-      container    = azure_archive.value.container
+      container       = azure_archive.value.container
       storage_account = azure_archive.value.storage_account
-      path         = lookup(azure_archive.value, "path", "/")
-      client_id    = azure_archive.value.client_id
-      tenant_id    = azure_archive.value.tenant_id
+      path            = lookup(azure_archive.value, "path", "/")
+      client_id       = azure_archive.value.client_id
+      tenant_id       = azure_archive.value.tenant_id
     }
   }
 
   dynamic "gcs_archive" {
     for_each = lookup(local.config.archive, "type", "") == "gcs" ? [local.config.archive.gcs] : []
     content {
-      bucket     = gcs_archive.value.bucket
-      path       = lookup(gcs_archive.value, "path", "/")
+      bucket       = gcs_archive.value.bucket
+      path         = lookup(gcs_archive.value, "path", "/")
       client_email = gcs_archive.value.client_email
-      project_id = gcs_archive.value.project_id
+      project_id   = gcs_archive.value.project_id
     }
   }
 

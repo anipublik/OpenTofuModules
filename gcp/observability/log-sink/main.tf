@@ -29,10 +29,10 @@ resource "google_logging_project_sink" "this" {
 resource "google_logging_organization_sink" "this" {
   for_each = { for idx, sink in lookup(local.config, "organization_sinks", []) : idx => sink }
 
-  name            = "${local.sink_name}-${each.value.name}"
-  org_id          = local.config.gcp.organization_id
-  destination     = each.value.destination
-  filter          = lookup(each.value, "filter", "")
+  name             = "${local.sink_name}-${each.value.name}"
+  org_id           = local.config.gcp.organization_id
+  destination      = each.value.destination
+  filter           = lookup(each.value, "filter", "")
   include_children = lookup(each.value, "include_children", true)
 
   dynamic "bigquery_options" {

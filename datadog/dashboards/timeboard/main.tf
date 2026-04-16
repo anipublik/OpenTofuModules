@@ -16,8 +16,8 @@ resource "datadog_dashboard" "this" {
           dynamic "request" {
             for_each = lookup(timeseries_definition.value, "requests", [])
             content {
-              q              = lookup(request.value, "query", "")
-              display_type   = lookup(request.value, "display_type", "line")
+              q            = lookup(request.value, "query", "")
+              display_type = lookup(request.value, "display_type", "line")
               style {
                 palette    = lookup(request.value, "palette", "dog_classic")
                 line_type  = lookup(request.value, "line_type", "solid")
@@ -31,9 +31,9 @@ resource "datadog_dashboard" "this" {
       dynamic "query_value_definition" {
         for_each = lookup(widget.value, "type", "") == "query_value" ? [widget.value] : []
         content {
-          title      = lookup(query_value_definition.value, "title", "")
-          autoscale  = lookup(query_value_definition.value, "autoscale", true)
-          precision  = lookup(query_value_definition.value, "precision", 2)
+          title     = lookup(query_value_definition.value, "title", "")
+          autoscale = lookup(query_value_definition.value, "autoscale", true)
+          precision = lookup(query_value_definition.value, "precision", 2)
 
           dynamic "request" {
             for_each = lookup(query_value_definition.value, "requests", [])

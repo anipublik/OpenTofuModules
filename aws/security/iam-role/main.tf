@@ -3,7 +3,7 @@ resource "aws_iam_role" "this" {
   description          = lookup(local.config.role, "description", "IAM role ${local.role_name}")
   assume_role_policy   = jsonencode(local.assume_role_policy)
   max_session_duration = lookup(local.config.role, "max_session_duration", 3600)
-  
+
   dynamic "inline_policy" {
     for_each = lookup(local.config.role, "inline_policies", [])
     content {

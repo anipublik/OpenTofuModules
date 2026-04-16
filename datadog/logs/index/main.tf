@@ -17,7 +17,7 @@ resource "datadog_logs_index" "this" {
     }
   }
 
-  retention_days        = lookup(local.config.index, "retention_days", 15)
-  daily_limit           = lookup(local.config.index, "daily_limit", null)
-  disable_daily_limit   = lookup(local.config.index, "disable_daily_limit", false)
+  retention_days      = lookup(local.config.index, "retention_days", 15)
+  daily_limit         = lookup(local.config.index, "daily_limit", null)
+  disable_daily_limit = lookup(local.config.index, "disable_daily_limit", false)
 }

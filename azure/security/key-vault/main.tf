@@ -32,7 +32,7 @@ resource "azurerm_key_vault_secret" "this" {
   value        = each.value.value
   key_vault_id = azurerm_key_vault.this.id
 
-  content_type = lookup(each.value, "content_type", null)
+  content_type    = lookup(each.value, "content_type", null)
   expiration_date = lookup(each.value, "expiration_date", null)
 
   tags = local.tags

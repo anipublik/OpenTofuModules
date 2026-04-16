@@ -26,7 +26,7 @@ resource "datadog_synthetics_test" "this" {
     tick_every           = lookup(local.config.test.options, "tick_every", 900)
     min_failure_duration = lookup(local.config.test.options, "min_failure_duration", 0)
     min_location_failed  = lookup(local.config.test.options, "min_location_failed", 1)
-    
+
     retry {
       count    = lookup(local.config.test.options, "retry_count", 0)
       interval = lookup(local.config.test.options, "retry_interval", 300)
