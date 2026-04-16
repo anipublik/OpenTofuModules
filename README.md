@@ -1,6 +1,6 @@
 # OpenTofu Cloud Modules Library
 
-⚠️ **DEVELOPMENT STATUS**: This library is under active development and has not been tested in production environments. Use at your own risk.
+⚠️ **DEVELOPMENT STATUS**: This library is under active development.
 
 Production-hardened, security-first, YAML-driven OpenTofu modules for AWS, Azure, GCP, and Datadog.
 
