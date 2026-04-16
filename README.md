@@ -186,7 +186,7 @@ gcp/gke/v1.5.3
 
 - **Issues** — Report bugs or request features via GitHub Issues
 - **Discussions** — Ask questions or share patterns in GitHub Discussions
-- **Security** — Report vulnerabilities privately via security@example.com
+- **Security** — Report vulnerabilities privately via ani@anisri.dev
 
 ## License
 
