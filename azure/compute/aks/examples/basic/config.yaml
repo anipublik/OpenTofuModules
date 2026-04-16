@@ -1,0 +1,53 @@
+meta:
+  environment: production
+  region: eastus
+  name: platform-aks
+  team: platform
+  cost_center: eng-001
+
+azure:
+  resource_group: rg-platform-prod
+
+cluster:
+  kubernetes_version: "1.29"
+  sku_tier: Standard
+  private_cluster: true
+  default_node_pool:
+    vm_size: Standard_D2s_v3
+    min_count: 1
+    max_count: 3
+    node_count: 1
+    os_disk_size_gb: 128
+    os_disk_type: Managed
+    availability_zones:
+      - 1
+      - 2
+      - 3
+    node_labels:
+      workload: system
+  network:
+    plugin: azure
+    policy: azure
+    service_cidr: 10.0.0.0/16
+    dns_service_ip: 10.0.0.10
+  azure_ad:
+    admin_group_object_ids: []
+    azure_rbac_enabled: true
+  addons:
+    azure_policy: true
+    log_analytics_workspace_id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-platform-prod/providers/Microsoft.OperationalInsights/workspaces/law-platform-prod
+
+networking:
+  subnet_id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-platform-prod/providers/Microsoft.Network/virtualNetworks/vnet-platform-prod/subnets/snet-aks
+
+reliability:
+  backup_retention_days: 7
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: true
+  audit_logging: true
+
+tags:
+  example: basic

@@ -1,0 +1,25 @@
+meta:
+  environment: production
+  name: service-uptime
+  team: backend
+  cost_center: eng-002
+
+slo:
+  description: "Service uptime based on health check monitors"
+  
+  monitor_ids:
+    - 12345
+    - 67890
+  
+  thresholds:
+    - timeframe: 7d
+      target: 99.5
+      warning: 99.7
+    
+    - timeframe: 30d
+      target: 99.5
+      warning: 99.7
+
+tags:
+  - service:api
+  - slo_type:uptime

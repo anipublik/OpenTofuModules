@@ -1,0 +1,15 @@
+meta:
+  environment: production
+  region: us-east-1
+  name: example
+  team: platform
+  cost_center: eng-001
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: true
+  audit_logging: true
+
+tags:
+  example: basic

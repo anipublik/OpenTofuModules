@@ -1,0 +1,33 @@
+meta:
+  environment: production
+  region: eastus
+  name: example-sql
+  team: platform
+  cost_center: eng-001
+
+azure:
+  resource_group_name: example-rg
+
+database:
+  server_version: "12.0"
+  sku_name: GP_Gen5_2
+  max_size_gb: 32
+  database_name: app_db
+  
+  administrator_login: sqladmin
+  # Use Azure Key Vault reference in production
+  administrator_login_password: "ChangeMe123!@#"
+
+reliability:
+  backup_retention_days: 7
+  geo_redundant_backup: true
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: true
+  audit_logging: true
+  tde_enabled: true
+
+tags:
+  example: basic

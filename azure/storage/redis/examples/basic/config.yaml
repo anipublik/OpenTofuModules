@@ -1,0 +1,38 @@
+meta:
+  environment: production
+  region: eastus
+  name: example-redis
+  team: platform
+  cost_center: eng-001
+
+azure:
+  resource_group: example-rg
+
+redis:
+  capacity: 1
+  family: C
+  sku_name: Standard
+  maxmemory_policy: allkeys-lru
+  replicas_per_master: 0
+  patch_day: Sunday
+  patch_hour: 2
+
+networking:
+  firewall_rules:
+    - name: office
+      start_ip: 203.0.113.0
+      end_ip: 203.0.113.255
+
+reliability:
+  zone_redundant: false
+  backup_enabled: false
+  backup_frequency: 60
+  backup_max_snapshots: 1
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: true
+
+tags:
+  example: basic

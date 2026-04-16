@@ -1,0 +1,24 @@
+meta:
+  environment: production
+  name: queue-depth
+  team: backend
+  cost_center: eng-002
+
+monitor:
+  type: metric alert
+  query: "avg(last_10m):avg:aws.sqs.approximate_number_of_messages_visible{queue:orders} > 1000"
+  message: |
+    SQS queue depth is high
+    @pagerduty-backend
+  
+  thresholds:
+    critical: 1000
+    warning: 500
+  
+  evaluation_delay: 120
+  notify_no_data: true
+  no_data_timeframe: 20
+
+tags:
+  - service:queue-processor
+  - severity:medium

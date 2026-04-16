@@ -1,0 +1,48 @@
+meta:
+  environment: production
+  region: eastus
+  name: example-cosmos
+  team: platform
+  cost_center: eng-001
+
+azure:
+  resource_group: example-rg
+
+cosmosdb:
+  kind: GlobalDocumentDB
+  consistency_level: Session
+  max_interval_in_seconds: 5
+  max_staleness_prefix: 100
+  
+  enable_automatic_failover: true
+  enable_multiple_write_locations: false
+  
+  backup_type: Periodic
+  backup_interval_minutes: 240
+  backup_retention_hours: 8
+  backup_storage_redundancy: Geo
+  
+  databases:
+    - name: app_db
+      throughput: 400
+      containers:
+        - name: users
+          partition_key_path: /userId
+          indexing_mode: consistent
+        - name: orders
+          partition_key_path: /orderId
+
+networking:
+  subnet_ids: []
+  allowed_ip_ranges: []
+
+reliability:
+  zone_redundant: true
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: true
+
+tags:
+  example: basic

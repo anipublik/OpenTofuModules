@@ -1,0 +1,22 @@
+meta:
+  environment: production
+  name: application-logs
+  team: backend
+  cost_center: eng-002
+
+index:
+  filter: "service:api env:production"
+  retention_days: 15
+  daily_limit: 1000000
+  disable_daily_limit: false
+  
+  exclusion_filters:
+    - name: "Exclude debug logs"
+      enabled: true
+      query: "status:debug"
+      sample_rate: 0.1
+    
+    - name: "Sample info logs"
+      enabled: true
+      query: "status:info"
+      sample_rate: 0.5

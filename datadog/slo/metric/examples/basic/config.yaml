@@ -1,0 +1,25 @@
+meta:
+  environment: production
+  name: api-availability
+  team: backend
+  cost_center: eng-002
+
+slo:
+  description: "API availability SLO - 99.9% uptime"
+  
+  query:
+    numerator: "sum:trace.http.request.hits{service:api,http.status_code:200}.as_count()"
+    denominator: "sum:trace.http.request.hits{service:api}.as_count()"
+  
+  thresholds:
+    - timeframe: 7d
+      target: 99.9
+      warning: 99.95
+    
+    - timeframe: 30d
+      target: 99.9
+      warning: 99.95
+
+tags:
+  - service:api
+  - slo_type:availability

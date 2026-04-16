@@ -1,0 +1,29 @@
+meta:
+  environment: production
+  name: high-cpu
+  team: platform
+  cost_center: eng-001
+
+monitor:
+  type: metric alert
+  query: "avg(last_5m):avg:system.cpu.user{env:production} by {host} > 90"
+  message: |
+    {{#is_alert}}
+    CPU usage is critically high on {{host.name}}
+    Current: {{value}}%
+    {{/is_alert}}
+    
+    @slack-platform-alerts
+  
+  thresholds:
+    critical: 90
+    warning: 75
+    critical_recovery: 85
+  
+  new_group_delay: 300
+  notify_no_data: true
+  no_data_timeframe: 10
+
+tags:
+  - severity:high
+  - monitor_type:infrastructure

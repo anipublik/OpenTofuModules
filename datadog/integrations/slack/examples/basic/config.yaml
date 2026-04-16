@@ -1,0 +1,21 @@
+meta:
+  environment: production
+  name: slack-integration
+  team: platform
+  cost_center: eng-001
+
+integration:
+  account_name: example-workspace
+  
+  channels:
+    - channel_name: "#backend-alerts"
+      display_message: true
+      display_notified: true
+      display_snapshot: true
+      display_tags: true
+    
+    - channel_name: "#platform-alerts"
+      display_message: true
+      display_notified: true
+      display_snapshot: false
+      display_tags: true

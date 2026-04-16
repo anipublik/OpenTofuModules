@@ -1,0 +1,64 @@
+meta:
+  environment: production
+  region: us-central1
+  name: platform-gke
+  team: platform
+  cost_center: eng-001
+
+gcp:
+  project_id: my-gcp-project
+
+cluster:
+  release_channel: REGULAR
+  enable_private_nodes: true
+  enable_private_endpoint: false
+  master_ipv4_cidr_block: 172.16.0.0/28
+  master_global_access: false
+  master_authorized_networks:
+    - cidr_block: 10.0.0.0/8
+      display_name: internal
+  addons:
+    http_load_balancing: true
+    horizontal_pod_autoscaling: true
+    network_policy: true
+    gce_persistent_disk_csi_driver: true
+  logging:
+    enable_components:
+      - SYSTEM_COMPONENTS
+      - WORKLOADS
+  monitoring:
+    enable_components:
+      - SYSTEM_COMPONENTS
+      - WORKLOADS
+    managed_prometheus: true
+
+networking:
+  network: projects/my-gcp-project/global/networks/vpc-platform-prod
+  subnetwork: projects/my-gcp-project/regions/us-central1/subnetworks/snet-gke
+  pods_range_name: pods
+  services_range_name: services
+
+node_pools:
+  - name: system
+    machine_type: e2-standard-4
+    initial_node_count: 1
+    autoscaling:
+      min_node_count: 1
+      max_node_count: 3
+    management:
+      auto_repair: true
+      auto_upgrade: true
+    shielded_instance_config:
+      enable_secure_boot: true
+      enable_integrity_monitoring: true
+    labels:
+      workload: system
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: true
+  audit_logging: true
+
+tags:
+  example: basic

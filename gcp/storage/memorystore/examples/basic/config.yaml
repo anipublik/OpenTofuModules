@@ -1,0 +1,38 @@
+meta:
+  environment: production
+  region: us-central1
+  name: example-redis
+  team: platform
+  cost_center: eng-001
+
+gcp:
+  project_id: my-gcp-project
+
+redis:
+  tier: STANDARD_HA
+  memory_size_gb: 1
+  redis_version: REDIS_7_0
+  display_name: example-redis-production
+  reserved_ip_range: null
+  connect_mode: PRIVATE_SERVICE_ACCESS
+  auth_enabled: true
+  transit_encryption_mode: SERVER_AUTHENTICATION
+  replica_count: 1
+  read_replicas_mode: READ_REPLICAS_ENABLED
+  
+  maintenance_policy:
+    day: SUNDAY
+    start_hour: 0
+    start_minute: 0
+  
+  persistence_enabled: false
+
+networking:
+  network: projects/my-gcp-project/global/networks/default
+
+security:
+  encryption_enabled: true
+  deletion_protection: true
+
+tags:
+  example: basic

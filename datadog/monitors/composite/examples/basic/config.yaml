@@ -1,0 +1,18 @@
+meta:
+  environment: production
+  name: service-degraded
+  team: backend
+  cost_center: eng-002
+
+monitor:
+  query: "12345 && 67890"  # Monitor IDs for latency AND error rate
+  message: |
+    Service is degraded (high latency AND high errors)
+    @pagerduty-backend
+  
+  renotify_interval: 60
+  notify_no_data: false
+
+tags:
+  - service:api
+  - severity:critical

@@ -1,0 +1,32 @@
+meta:
+  environment: production
+  region: us-east-1
+  name: my-app-assets
+  team: platform
+  cost_center: eng-001
+
+bucket:
+  versioning: true
+  intelligent_tiering: true
+  logging_bucket: my-logging-bucket
+  lifecycle_rules:
+    - id: archive-old-versions
+      enabled: true
+      noncurrent_version_transition:
+        days: 30
+        storage_class: GLACIER
+      noncurrent_version_expiration:
+        days: 90
+
+encryption:
+  kms_key_id: null  # Use AWS-managed keys
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: true
+  audit_logging: true
+
+tags:
+  project: example
+  purpose: demo

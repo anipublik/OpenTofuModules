@@ -1,0 +1,28 @@
+meta:
+  environment: production
+  name: aws-integration
+  team: platform
+  cost_center: eng-001
+
+integration:
+  account_id: "123456789012"
+  role_name: DatadogIntegrationRole
+  
+  filter_tags:
+    - env:production
+    - managed-by:terraform
+  
+  host_tags:
+    - account:production
+  
+  namespace_rules:
+    auto_scaling: true
+    ec2: true
+    elb: true
+    lambda: true
+    rds: true
+    s3: true
+  
+  excluded_regions:
+    - us-gov-east-1
+    - us-gov-west-1

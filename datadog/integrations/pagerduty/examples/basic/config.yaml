@@ -1,0 +1,16 @@
+meta:
+  environment: production
+  name: pagerduty-integration
+  team: platform
+  cost_center: eng-001
+
+integration:
+  subdomain: example
+  api_token: "${PAGERDUTY_API_TOKEN}"
+  
+  services:
+    - service_name: Backend API
+      service_key: "${PAGERDUTY_BACKEND_KEY}"
+    
+    - service_name: Platform Infrastructure
+      service_key: "${PAGERDUTY_PLATFORM_KEY}"

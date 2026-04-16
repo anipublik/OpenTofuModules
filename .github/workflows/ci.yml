@@ -1,0 +1,196 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  format:
+    name: Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1.0.3
+        with:
+          tofu_version: 1.7.0
+      
+      - name: Format Check
+        run: tofu fmt -check -recursive
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        provider: [aws, azure, gcp, datadog]
+    steps:
+      - uses: actions/checkout@v4.1.1
+      
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4.0.0
+        with:
+          tflint_version: v0.50.3
+      
+      - name: Init TFLint
+        run: tflint --init
+      
+      - name: Run TFLint
+        run: tflint --recursive --config=${GITHUB_WORKSPACE}/.tflint.hcl
+        working-directory: ${{ matrix.provider }}
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@v12.2748.0
+        with:
+          directory: .
+          framework: terraform
+          quiet: false
+          soft_fail: false
+          skip_check: CKV_AWS_23,CKV_AWS_24  # Skip specific checks if needed
+      
+      - name: Run Trivy
+        uses: aquasecurity/trivy-action@v0.35.0
+        with:
+          scan-type: 'config'
+          scan-ref: '.'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+          skip-dirs: 'examples/'  # Skip example configs
+
+  policy:
+    name: Policy Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      
+      - name: Setup OPA
+        uses: open-policy-agent/setup-opa@v2.2.0
+      
+      - name: Run OPA Tests
+        run: opa test policy -v
+
+  docs:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+      - name: Check README exists
+        run: |
+          find . -type d -name examples -prune -o -type f -name "main.tf" -print | \
+          while read tf; do
+            dir=$(dirname "$tf")
+            if [ ! -f "$dir/README.md" ]; then
+              echo "ERROR: Missing README.md in $dir"
+              exit 1
+            fi
+          done
+
+      - name: Install terraform-docs
+        run: |
+          curl -sSLo /tmp/tfdocs.tar.gz https://terraform-docs.io/dl/v0.17.0/terraform-docs-v0.17.0-$(uname)-amd64.tar.gz
+          tar -xzf /tmp/tfdocs.tar.gz -C /tmp
+          sudo mv /tmp/terraform-docs /usr/local/bin/
+          terraform-docs --version
+
+      - name: Verify terraform-docs sections are in sync
+        run: |
+          set -e
+          failed=0
+          while IFS= read -r dir; do
+            if [ -f "$dir/README.md" ] && grep -q 'BEGIN_TF_DOCS' "$dir/README.md"; then
+              if ! terraform-docs markdown table --output-check --output-file README.md "$dir"; then
+                echo "::error::terraform-docs drift in $dir (run: terraform-docs markdown table --output-file README.md $dir)"
+                failed=1
+              fi
+            fi
+          done < <(find . -type d -name examples -prune -o -type f -name main.tf -print | xargs -n1 dirname | sort -u)
+          exit $failed
+
+  validate-all:
+    name: Validate All Examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1.0.3
+        with:
+          tofu_version: 1.7.0
+
+      - name: Init & Validate every examples/basic
+        run: |
+          set -e
+          failed=0
+          while IFS= read -r dir; do
+            echo "::group::Validating $dir"
+            if ! (cd "$dir" && tofu init -backend=false -input=false && tofu validate); then
+              echo "::error::Validate failed in $dir"
+              failed=1
+            fi
+            echo "::endgroup::"
+          done < <(find . -type d -path '*/examples/basic' | sort)
+          exit $failed
+
+  validate:
+    name: Plan Representative Modules
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module:
+          - aws/storage/rds
+          - aws/compute/eks
+          - azure/storage/sql
+          - azure/compute/aks
+          - gcp/storage/cloudsql
+          - gcp/compute/gke
+    steps:
+      - uses: actions/checkout@v4.1.1
+      
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1.0.3
+        with:
+          tofu_version: 1.7.0
+      
+      - name: Init
+        run: tofu init -backend=false
+        working-directory: ${{ matrix.module }}/examples/basic
+      
+      - name: Validate
+        run: tofu validate
+        working-directory: ${{ matrix.module }}/examples/basic
+      
+      - name: Plan (dry-run)
+        run: tofu plan -input=false -out=tfplan.bin
+        working-directory: ${{ matrix.module }}/examples/basic
+        # Fail hard - no continue-on-error
+
+      - name: Export plan as JSON
+        run: tofu show -json tfplan.bin > tfplan.json
+        working-directory: ${{ matrix.module }}/examples/basic
+
+      - name: Setup OPA
+        uses: open-policy-agent/setup-opa@v2.2.0
+
+      - name: Evaluate OPA policies against plan
+        run: |
+          set -e
+          plan="${{ matrix.module }}/examples/basic/tfplan.json"
+          result=$(opa eval --data policy --input "$plan" 'data.terraform.deny' --format json)
+          echo "$result"
+          denies=$(echo "$result" | jq -r '.result[0].expressions[0].value | length // 0')
+          if [ "$denies" -gt 0 ]; then
+            echo "::error::OPA policy denied ${denies} finding(s) for ${{ matrix.module }}"
+            echo "$result" | jq -r '.result[0].expressions[0].value[]' | sed 's/^/::error::/'
+            exit 1
+          fi

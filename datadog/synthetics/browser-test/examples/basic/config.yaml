@@ -1,0 +1,54 @@
+meta:
+  environment: production
+  name: login-flow
+  team: frontend
+  cost_center: eng-003
+
+test:
+  status: live
+  message: "Login flow failed @slack-frontend-alerts"
+  start_url: "https://app.example.com/login"
+  locations:
+    - aws:us-east-1
+    - aws:eu-west-1
+  device_ids:
+    - laptop_large
+    - tablet
+  
+  steps:
+    - name: "Navigate to login page"
+      type: goToUrl
+      params:
+        url: "https://app.example.com/login"
+    
+    - name: "Enter username"
+      type: typeText
+      params:
+        element: "#username"
+        value: "test@example.com"
+    
+    - name: "Enter password"
+      type: typeText
+      params:
+        element: "#password"
+        value: "{{ SYNTHETIC_PASSWORD }}"
+    
+    - name: "Click login button"
+      type: click
+      params:
+        element: "#login-button"
+    
+    - name: "Assert dashboard loaded"
+      type: assertElementPresent
+      params:
+        element: "#dashboard"
+  
+  options:
+    tick_every: 900
+    min_failure_duration: 0
+    min_location_failed: 1
+    retry_count: 1
+
+tags:
+  - test_type:browser
+  - flow:authentication

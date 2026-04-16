@@ -1,0 +1,45 @@
+meta:
+  environment: production
+  region: us-central1
+  name: example-db
+  team: platform
+  cost_center: eng-001
+
+gcp:
+  project_id: my-gcp-project
+
+database:
+  database_version: POSTGRES_15
+  tier: db-custom-2-8192
+  disk_type: PD_SSD
+  disk_size: 100
+  disk_autoresize: true
+  
+  backup_start_time: "03:00"
+  maintenance_day: 7
+  maintenance_hour: 4
+  
+  databases:
+    - app_production
+  
+  users:
+    - name: app_user
+      type: BUILT_IN
+      password: null  # Use Secret Manager in production
+
+networking:
+  ipv4_enabled: false
+  private_network: projects/my-gcp-project/global/networks/default
+
+reliability:
+  multi_az: true
+  point_in_time_recovery: true
+  backup_retention_days: 7
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: true
+
+tags:
+  example: basic

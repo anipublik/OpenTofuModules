@@ -1,0 +1,46 @@
+meta:
+  environment: production
+  region: us-central1
+  name: example-bucket
+  team: platform
+  cost_center: eng-001
+
+gcp:
+  project_id: my-gcp-project
+
+bucket:
+  location: US
+  storage_class: STANDARD
+  versioning: true
+  
+  lifecycle_rules:
+    - action:
+        type: Delete
+      condition:
+        age: 90
+        with_state: ARCHIVED
+    
+    - action:
+        type: SetStorageClass
+        storage_class: NEARLINE
+      condition:
+        age: 30
+        matches_storage_class:
+          - STANDARD
+  
+  logging_bucket: null
+  logging_prefix: gcs-logs/
+  
+  iam_bindings:
+    - role: roles/storage.objectViewer
+      members:
+        - serviceAccount:app@my-project.iam.gserviceaccount.com
+
+security:
+  encryption_enabled: true
+  kms_key_id: null
+  public_access: false
+  deletion_protection: false
+
+tags:
+  example: basic

@@ -1,0 +1,21 @@
+meta:
+  environment: production
+  name: compliance-archive
+  team: platform
+  cost_center: eng-001
+
+archive:
+  query: "env:production"
+  type: s3
+  
+  s3:
+    bucket: my-datadog-logs-archive
+    path: /logs/production
+    account_id: "123456789012"
+    role_name: DatadogLogsArchiveRole
+  
+  rehydration_tags:
+    - team:backend
+    - archived:true
+  
+  include_tags: true

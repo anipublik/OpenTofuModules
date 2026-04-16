@@ -1,0 +1,36 @@
+meta:
+  environment: production
+  name: service-overview
+  team: backend
+  cost_center: eng-002
+
+dashboard:
+  description: "API service performance overview"
+  
+  widgets:
+    - type: timeseries
+      title: "Request Latency (p95)"
+      show_legend: true
+      requests:
+        - query: "avg:trace.http.request.duration.by.service.95p{service:api}"
+          display_type: line
+          palette: dog_classic
+    
+    - type: query_value
+      title: "Error Rate"
+      autoscale: true
+      precision: 2
+      requests:
+        - query: "sum:trace.http.request.errors{service:api}.as_count() / sum:trace.http.request.hits{service:api}.as_count() * 100"
+          aggregator: avg
+  
+  template_variables:
+    - name: env
+      prefix: env
+      default: production
+    - name: service
+      prefix: service
+      default: api
+  
+  notify_list:
+    - backend-team@example.com

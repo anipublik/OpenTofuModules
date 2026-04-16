@@ -1,0 +1,54 @@
+meta:
+  environment: production
+  region: us-east-1
+  name: api-handler
+  team: platform
+  cost_center: eng-001
+
+function:
+  handler: index.handler
+  runtime: python3.11
+  architectures:
+    - arm64
+  
+  s3_bucket: my-lambda-code-bucket
+  s3_key: functions/api-handler.zip
+  
+  memory_size: 512
+  timeout: 30
+  reserved_concurrent_executions: 10
+  
+  environment_variables:
+    ENVIRONMENT: production
+    LOG_LEVEL: INFO
+  
+  xray_tracing: true
+  log_retention_days: 30
+  
+  dead_letter_queue_arn: arn:aws:sqs:us-east-1:123456789012:dlq
+  
+  triggers:
+    - service: apigateway
+      source_arn: arn:aws:execute-api:us-east-1:123456789012:api-id/*
+  
+  iam_policy_statements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource: arn:aws:dynamodb:us-east-1:123456789012:table/my-table
+
+networking:
+  vpc_id: vpc-12345678
+  subnet_ids:
+    - subnet-11111111
+    - subnet-22222222
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: false
+  audit_logging: true
+
+tags:
+  application: api

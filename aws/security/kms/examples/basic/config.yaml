@@ -1,0 +1,26 @@
+meta:
+  environment: production
+  region: us-east-1
+  name: app-encryption
+  team: platform
+  cost_center: eng-001
+
+key:
+  description: "KMS key for application encryption"
+  deletion_window_days: 30
+  enable_rotation: true
+  multi_region: false
+  
+  grants:
+    - name: lambda-grant
+      grantee_principal: arn:aws:iam::123456789012:role/lambda-role
+      operations:
+        - Decrypt
+        - DescribeKey
+
+security:
+  encryption_enabled: true
+  deletion_protection: true
+
+tags:
+  purpose: encryption

@@ -1,0 +1,47 @@
+meta:
+  environment: production
+  region: eastus
+  name: example-storage
+  team: platform
+  cost_center: eng-001
+
+azure:
+  resource_group: example-rg
+
+storage:
+  account_tier: Standard
+  replication_type: GRS
+  account_kind: StorageV2
+  access_tier: Hot
+  versioning_enabled: true
+  soft_delete_retention_days: 7
+  container_soft_delete_retention_days: 7
+  
+  containers:
+    - name: data
+      access_type: private
+    - name: backups
+      access_type: private
+  
+  lifecycle_rules:
+    - name: archive-old-data
+      enabled: true
+      prefix_match:
+        - data/
+      blob_types:
+        - blockBlob
+      tier_to_cool_days: 30
+      tier_to_archive_days: 90
+      delete_after_days: 365
+
+networking:
+  allowed_ip_ranges: []
+  subnet_ids: []
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: true
+
+tags:
+  example: basic

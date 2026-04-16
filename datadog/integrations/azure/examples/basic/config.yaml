@@ -1,0 +1,12 @@
+meta:
+  environment: production
+  name: azure-integration
+  team: platform
+  cost_center: eng-001
+
+integration:
+  tenant_name: example.onmicrosoft.com
+  client_id: "12345678-1234-1234-1234-123456789012"
+  client_secret: "${AZURE_CLIENT_SECRET}"
+  
+  host_filters: "env:production,managed-by:terraform"

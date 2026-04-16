@@ -1,0 +1,18 @@
+# Trivy ignore file for OpenTofu modules
+
+# Example configurations may have placeholder values
+# AVD-AWS-0176: RDS instance with publicly accessible endpoint
+# Justification: Controlled by public_access config, defaults to false
+AVD-AWS-0176
+
+# AVD-AWS-0177: RDS instance without deletion protection
+# Justification: Controlled by deletion_protection config, defaults to true in production
+AVD-AWS-0177
+
+# AVD-AZURE-0018: Storage account without HTTPS-only
+# Justification: Enforced in code with enable_https_traffic_only = true
+AVD-AZURE-0018
+
+# AVD-GCP-0011: Compute instance without Shielded VM
+# Justification: Optional feature, can be enabled via config
+AVD-GCP-0011

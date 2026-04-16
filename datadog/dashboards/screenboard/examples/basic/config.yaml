@@ -1,0 +1,35 @@
+meta:
+  environment: production
+  name: infrastructure-dashboard
+  team: platform
+  cost_center: eng-001
+
+dashboard:
+  description: "Infrastructure monitoring dashboard"
+  
+  widgets:
+    - type: timeseries
+      title: "CPU Usage"
+      layout:
+        x: 0
+        y: 0
+        width: 47
+        height: 15
+      requests:
+        - query: "avg:system.cpu.user{*} by {host}"
+          display_type: line
+    
+    - type: note
+      content: "## Infrastructure Metrics\nMonitoring CPU, memory, and disk"
+      layout:
+        x: 48
+        y: 0
+        width: 47
+        height: 15
+      background_color: blue
+      font_size: 14
+      text_align: center
+  
+  template_variables:
+    - name: host
+      prefix: host

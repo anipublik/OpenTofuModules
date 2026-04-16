@@ -1,0 +1,36 @@
+meta:
+  environment: production
+  region: us-central1
+  name: example-spanner
+  team: platform
+  cost_center: eng-001
+
+gcp:
+  project_id: my-gcp-project
+
+spanner:
+  config: regional-us-central1
+  display_name: example-spanner-production
+  num_nodes: 1
+  processing_units: null
+  
+  databases:
+    - name: app_db
+      version_retention_period: 1h
+      deletion_protection: true
+      ddl:
+        - "CREATE TABLE Users (UserId INT64 NOT NULL, Name STRING(100)) PRIMARY KEY (UserId)"
+        - "CREATE TABLE Orders (OrderId INT64 NOT NULL, UserId INT64, Amount FLOAT64) PRIMARY KEY (OrderId)"
+  
+  iam_bindings:
+    - database_index: 0
+      role: roles/spanner.databaseReader
+      members:
+        - serviceAccount:app@my-project.iam.gserviceaccount.com
+
+security:
+  encryption_enabled: true
+  deletion_protection: true
+
+tags:
+  example: basic

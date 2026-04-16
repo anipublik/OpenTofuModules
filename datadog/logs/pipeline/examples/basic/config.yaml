@@ -1,0 +1,41 @@
+meta:
+  environment: production
+  name: json-parser
+  team: platform
+  cost_center: eng-001
+
+pipeline:
+  enabled: true
+  filter: "source:application"
+  
+  processors:
+    - type: grok-parser
+      name: "Parse log format"
+      enabled: true
+      source: message
+      match_rules: "%{date:timestamp} %{word:level} %{data:message}"
+      samples:
+        - "2024-01-15 ERROR Failed to connect"
+    
+    - type: date-remapper
+      name: "Remap timestamp"
+      enabled: true
+      sources:
+        - timestamp
+    
+    - type: status-remapper
+      name: "Remap log level"
+      enabled: true
+      sources:
+        - level
+    
+    - type: attribute-remapper
+      name: "Remap service"
+      enabled: true
+      sources:
+        - app_name
+      source_type: attribute
+      target: service
+      target_type: tag
+      preserve_source: false
+      override_on_conflict: true

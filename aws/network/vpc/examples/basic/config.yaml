@@ -1,0 +1,22 @@
+meta:
+  environment: production
+  region: us-east-1
+  name: main
+  team: platform
+  cost_center: eng-001
+
+network:
+  cidr_block: 10.0.0.0/16
+  availability_zones:
+    - us-east-1a
+    - us-east-1b
+    - us-east-1c
+
+security:
+  flow_logs_enabled: true
+  public_access: false
+  deletion_protection: true
+  audit_logging: true
+
+tags:
+  project: infrastructure

@@ -1,0 +1,36 @@
+# Checkov configuration for OpenTofu modules
+framework:
+  - terraform
+
+# Skip specific checks with justification
+skip-check:
+  # AWS
+  - CKV_AWS_23  # Security group rule without description - acceptable for generated rules
+  - CKV_AWS_24  # Security group ingress from 0.0.0.0/0 - controlled by config
+  
+  # Azure
+  - CKV_AZURE_35  # Network security group rule without description
+  
+  # GCP
+  - CKV_GCP_6  # Compute instance without block project-wide SSH keys
+
+# Soft fail on these (warning only)
+soft-fail-on:
+  - CKV_AWS_126  # RDS instance without IAM authentication
+  - CKV_AZURE_113  # SQL server without Azure AD authentication
+
+# Directories to exclude
+exclude-paths:
+  - examples/
+  - _template/
+  - .github/
+
+# Output format
+output:
+  - cli
+  - sarif
+
+# Fail on severity
+hard-fail-on:
+  - CRITICAL
+  - HIGH

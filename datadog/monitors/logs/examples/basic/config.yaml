@@ -1,0 +1,23 @@
+meta:
+  environment: production
+  name: error-spike
+  team: backend
+  cost_center: eng-002
+
+monitor:
+  query: "logs(\"status:error service:api\").index(\"main\").rollup(\"count\").last(\"5m\") > 100"
+  message: |
+    Error log spike detected
+    @slack-backend-alerts
+  
+  thresholds:
+    critical: 100
+    warning: 50
+  
+  evaluation_delay: 60
+  notify_no_data: false
+  enable_logs_sample: true
+
+tags:
+  - service:api
+  - severity:high

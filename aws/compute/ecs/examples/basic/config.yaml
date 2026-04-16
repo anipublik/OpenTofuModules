@@ -1,0 +1,63 @@
+meta:
+  environment: production
+  region: us-east-1
+  name: api-service
+  team: platform
+  cost_center: eng-001
+
+task:
+  container_name: api
+  image: nginx:latest
+  container_port: 80
+  cpu: "512"
+  memory: "1024"
+  
+  environment_variables:
+    ENVIRONMENT: production
+    LOG_LEVEL: info
+  
+  secrets:
+    DB_PASSWORD: arn:aws:secretsmanager:us-east-1:123456789012:secret:db-password
+  
+  health_check:
+    command: ["CMD-SHELL", "curl -f http://localhost/ || exit 1"]
+    interval: 30
+    timeout: 5
+    retries: 3
+  
+  log_retention_days: 30
+  
+  iam_policy_statements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+      Resource: arn:aws:s3:::my-bucket/*
+
+service:
+  desired_count: 3
+  min_capacity: 2
+  max_capacity: 10
+  target_cpu_utilization: 70
+  target_memory_utilization: 80
+  
+  load_balancer:
+    target_group_arn: arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/my-tg/abc123
+    security_group_id: sg-12345678
+  
+  health_check_grace_period: 60
+
+networking:
+  vpc_id: vpc-12345678
+  subnet_ids:
+    - subnet-11111111
+    - subnet-22222222
+  assign_public_ip: false
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: false
+  audit_logging: true
+
+tags:
+  application: api

@@ -1,0 +1,62 @@
+meta:
+  environment: production
+  region: us-east-1
+  name: platform-eks
+  team: platform
+  cost_center: eng-001
+
+cluster:
+  kubernetes_version: "1.30"
+  endpoint_private_access: true
+  endpoint_public_access: false
+  
+  encryption:
+    enabled: true
+  
+  logging:
+    enabled: true
+    types:
+      - api
+      - audit
+      - authenticator
+      - controllerManager
+      - scheduler
+
+networking:
+  vpc_id: vpc-12345678
+  subnet_ids:
+    - subnet-11111111
+    - subnet-22222222
+    - subnet-33333333
+
+node_groups:
+  - name: general
+    instance_types:
+      - m5.xlarge
+    capacity_type: ON_DEMAND
+    min_size: 2
+    max_size: 10
+    desired_size: 3
+    disk_size: 100
+    disk_encrypted: true
+    labels:
+      workload: general
+
+addons:
+  vpc_cni:
+    version: "v1.18.0-eksbuild.1"
+    resolve_conflicts: OVERWRITE
+  coredns:
+    version: "v1.11.1-eksbuild.4"
+  kube_proxy:
+    version: "v1.30.0-eksbuild.3"
+
+security:
+  encryption_enabled: true
+  public_access: false
+  deletion_protection: true
+  audit_logging: true
+
+tags:
+  project: platform
+  compliance: pci-dss
