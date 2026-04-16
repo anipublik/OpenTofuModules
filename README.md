@@ -1,5 +1,7 @@
 # OpenTofu Cloud Modules Library
 
+[![Tofufy](https://img.shields.io/badge/TOFUFY-brightgreen?style=for-the-badge&logo=opentofu&logoColor=white)](https://tofufy.anisri.dev)
+
 ⚠️ **DEVELOPMENT STATUS**: This library is under active development.
 
 Production-hardened, security-first, YAML-driven OpenTofu modules for AWS, Azure, GCP, and Datadog.

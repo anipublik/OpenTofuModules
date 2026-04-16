@@ -2,18 +2,13 @@ package terraform
 
 import rego.v1
 
-module_resources(module) contains resource if {
-    some resource in object.get(module, "resources", [])
-}
-
-module_resources(module) contains resource if {
-    some child in object.get(module, "child_modules", [])
-    some resource in module_resources(child)
-}
-
+# Collect every planned resource at any depth under planned_values.root_module
+# using walk(), which avoids illegal self-recursive rules.
 planned_resources contains resource if {
     root := object.get(object.get(input, "planned_values", {}), "root_module", {})
-    some resource in module_resources(root)
+    walk(root, [_, node])
+    is_object(node)
+    some resource in object.get(node, "resources", [])
 }
 
 managed_resources contains resource if {

@@ -182,16 +182,15 @@ resource "aws_security_group_rule" "egress" {
   description       = "Allow all outbound traffic"
 }
 
-dynamic "aws_security_group_rule" "ingress" {
-  for_each = lookup(local.config.networking, "ingress_rules", [])
-  content {
-    type                     = "ingress"
-    from_port                = ingress.value.from_port
-    to_port                  = ingress.value.to_port
-    protocol                 = ingress.value.protocol
-    cidr_blocks              = lookup(ingress.value, "cidr_blocks", null)
-    source_security_group_id = lookup(ingress.value, "source_security_group_id", null)
-    security_group_id        = aws_security_group.this.id
-    description              = lookup(ingress.value, "description", "")
-  }
+resource "aws_security_group_rule" "ingress" {
+  for_each = { for idx, rule in lookup(local.config.networking, "ingress_rules", []) : idx => rule }
+
+  type                     = "ingress"
+  from_port                = each.value.from_port
+  to_port                  = each.value.to_port
+  protocol                 = each.value.protocol
+  cidr_blocks              = lookup(each.value, "cidr_blocks", null)
+  source_security_group_id = lookup(each.value, "source_security_group_id", null)
+  security_group_id        = aws_security_group.this.id
+  description              = lookup(each.value, "description", "")
 }

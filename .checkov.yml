@@ -20,7 +20,7 @@ soft-fail-on:
   - CKV_AZURE_113  # SQL server without Azure AD authentication
 
 # Directories to exclude
-exclude-paths:
+skip-path:
   - examples/
   - _template/
   - .github/
